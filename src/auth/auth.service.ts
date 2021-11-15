@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/ban-types */
 import { Injectable, BadRequestException,ForbiddenException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -10,6 +12,12 @@ export class AuthService {
 
 
   async register(user: User): Promise<User> {
+
+    const isUser = await this.UserModel.findOne({email:user.email});
+
+    if(isUser){
+      throw new BadRequestException('User exists.')
+    }
 
     const saltOrRounds = 10;
     const password = user.password;

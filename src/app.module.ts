@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module,NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -7,9 +8,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CheckJWT,CheckAdminUser } from './auth/middlewares/auth.middleware';
 import { InventoryModule } from './inventory/inventory.module';
 
-
+const db_uri = process.env.NODE_ENV === 'development' ? 'mongodb://localhost:27017/favourinventory' : process.env.DB
 @Module({
-  imports: [AuthModule, UserModule,MongooseModule.forRoot('mongodb://localhost:27017/favourinventory'), InventoryModule],
+  imports: [AuthModule, UserModule,MongooseModule.forRoot(db_uri), InventoryModule],
   controllers: [AppController],
   providers: [AppService],
 })
